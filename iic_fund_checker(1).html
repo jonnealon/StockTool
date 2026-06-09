@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deportation, Inc. — Fund Checker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page-bg: #888888;
+    --card-bg: #FFFFFF;
+    --bg2: #F2F1EE;
+    --bg3: #E4E2DD;
+    --text: #1A1A18;
+    --text2: #5C5C56;
+    --text3: #8A8A82;
+    --on-grey: #FFFFFF;
+    --on-grey2: rgba(255,255,255,0.75);
+    --on-grey3: rgba(255,255,255,0.5);
+    --on-grey-border: rgba(255,255,255,0.2);
+    --border: rgba(26,26,24,0.13);
+    --border2: rgba(26,26,24,0.26);
+    --red: #C13030;
+    --red-bg: #FDF1F1;
+    --red-border: #EDBBBB;
+    --blue: #1A5FAB;
+    --blue-bg: #EEF5FC;
+    --blue-border: #B8D4F0;
+    --amber: #8C5200;
+    --amber-bg: #FDF5E8;
+    --amber-border: #F0D49A;
+    --purple: #4A3BB5;
+    --purple-bg: #F0EEFF;
+    --purple-border: #C8C0F4;
+    --green: #2A6B2A;
+    --green-bg: #EFF7EF;
+    --green-border: #AEDDAE;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --mono: 'Courier Prime', 'Courier New', monospace;
+    --sans: 'Libre Franklin', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--page-bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 52px 28px; }
+  .two-col { display: grid; grid-template-columns: 1fr 280px; gap: 28px; align-items: start; }
+  .side-col { position: sticky; top: 24px; }
+
+  /* --- Page-level elements (sit on grey) --- */
+  .series-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-grey3); margin-bottom: 14px; }
+  h1 { font-family: var(--sans); font-size: 34px; font-weight: 300; line-height: 1.2; color: var(--on-grey); margin-bottom: 12px; letter-spacing: -0.3px; }
+  .deck { font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--on-grey2); line-height: 1.75; margin-bottom: 32px; max-width: 600px; }
+  .rule { height: 1px; background: var(--on-grey-border); margin-bottom: 24px; }
+  .section-head { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-grey3); margin-bottom: 14px; }
+  .disclaimer { font-family: var(--sans); font-size: 11px; font-weight: 400; color: var(--on-grey3); line-height: 1.7; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--on-grey-border); }
+
+  /* --- Company grid --- */
+  .co-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; margin-bottom: 28px; }
+  .co-card { background: var(--card-bg); border: none; border-radius: var(--radius); padding: 13px; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+  .co-ticker { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--text); }
+  .co-name { font-family: var(--sans); font-size: 11px; font-weight: 400; color: var(--text2); margin: 3px 0 7px; line-height: 1.4; }
+  .co-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 20px; display: inline-block; }
+  .tag-detention { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .tag-surveillance { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .tag-data { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+  .tag-transport { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .co-note { font-family: var(--sans); font-size: 10px; color: var(--text3); margin-top: 5px; line-height: 1.4; }
+
+  /* --- Search & cards (sit on white) --- */
+  .search-wrap { background: var(--card-bg); border: none; border-radius: var(--radius-lg); padding: 20px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.14); }
+  .search-row { display: flex; gap: 8px; }
+  .search-row input { flex: 1; font-family: var(--mono); font-size: 15px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg2); color: var(--text); outline: none; transition: border-color 0.15s; }
+  .search-row input:focus { border-color: var(--border2); background: #fff; }
+  .search-row button { font-family: var(--sans); font-size: 14px; font-weight: 500; padding: 10px 18px; background: var(--text); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; white-space: nowrap; letter-spacing: 0.01em; }
+  .search-row button:hover { opacity: 0.85; }
+  .sugg-list { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 8px; background: var(--card-bg); }
+  .sugg-item { padding: 9px 14px; cursor: pointer; font-size: 13px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--border); }
+  .sugg-item:last-child { border-bottom: none; }
+  .sugg-item:hover { background: var(--bg2); }
+  .sugg-t { font-family: var(--mono); font-weight: 700; font-size: 13px; min-width: 60px; }
+  .sugg-n { font-family: var(--sans); color: var(--text2); font-size: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .chip { font-family: var(--mono); font-size: 11px; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); cursor: pointer; color: var(--text2); background: var(--bg2); }
+  .chip:hover { border-color: var(--border2); color: var(--text); background: var(--bg3); }
+
+  /* --- Result card --- */
+  .result-wrap { margin-top: 0; }
+  .r-card { background: var(--card-bg); border: none; border-radius: var(--radius-lg); padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.14); }
+  .r-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+  .r-ticker { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--text); }
+  .r-meta { font-family: var(--sans); font-size: 12px; color: var(--text2); margin-top: 3px; }
+  .verdict { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; border-radius: 4px; flex-shrink: 0; margin-top: 4px; }
+  .v-high { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .v-partial { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .v-clear { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .pltr-note { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: var(--radius); padding: 10px 14px; font-family: var(--sans); font-size: 13px; color: var(--blue); line-height: 1.65; margin-bottom: 16px; }
+  .holdings-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+  .h-row { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .h-row:last-child { border-bottom: none; }
+  .h-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+  .dot-yes { background: var(--red); }
+  .dot-no { background: var(--bg3); }
+  .h-t { font-family: var(--mono); font-size: 12px; font-weight: 700; min-width: 44px; }
+  .h-n { font-family: var(--sans); font-size: 12px; color: var(--text2); flex: 1; }
+  .h-cat { font-size: 10px; opacity: 0.6; }
+  .h-w { font-family: var(--mono); font-size: 12px; color: var(--text3); flex-shrink: 0; }
+  .h-w.yes { color: var(--red); }
+  .explain { border-left: 2px solid var(--border2); padding-left: 12px; margin: 14px 0; font-family: var(--sans); font-size: 13px; font-style: italic; color: var(--text2); line-height: 1.75; }
+
+  /* --- Calculator --- */
+  .calc-section { background: var(--bg2); border-radius: var(--radius); padding: 14px; margin-top: 12px; }
+  .calc-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+  .calc-input-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .dollar-prefix { font-family: var(--sans); font-size: 15px; color: var(--text2); }
+  .calc-input-row input { width: 130px; font-family: var(--mono); font-size: 15px; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card-bg); color: var(--text); outline: none; }
+  .calc-lines { font-size: 13px; }
+  .c-line { display: flex; justify-content: space-between; padding: 3px 0; }
+  .c-t { font-family: var(--mono); color: var(--text2); }
+  .c-a { color: var(--red); font-weight: 700; }
+  .c-total { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-weight: 600; }
+  .c-total-lbl { font-family: var(--sans); font-size: 14px; }
+  .c-total-amt { font-family: var(--mono); font-size: 14px; color: var(--red); }
+
+  /* --- Rankings --- */
+  .rank-card { background: var(--card-bg); border: none; border-radius: var(--radius-lg); padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.14); }
+  .rank-head { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
+  .rank-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-row:hover .rank-t { color: var(--red); }
+  .rank-n { font-family: var(--mono); font-size: 10px; color: var(--text3); min-width: 16px; text-align: right; }
+  .rank-t { font-family: var(--mono); font-size: 12px; font-weight: 700; min-width: 48px; color: var(--text); transition: color 0.12s; }
+  .rank-label { font-family: var(--sans); font-size: 11px; color: var(--text2); flex: 1; line-height: 1.3; }
+  .rank-bar-wrap { width: 44px; flex-shrink: 0; }
+  .rank-bar-track { background: var(--bg3); border-radius: 2px; height: 4px; overflow: hidden; }
+  .rank-bar-fill { height: 4px; border-radius: 2px; }
+  .bar-exposed { background: var(--red); }
+
+  /* --- Misc --- */
+  .loading { display: flex; align-items: center; gap: 10px; padding: 16px; font-family: var(--sans); color: var(--text2); font-size: 14px; }
+  .spin { width: 16px; height: 16px; border: 2px solid var(--bg3); border-top-color: var(--text2); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ai-badge { font-family: var(--mono); font-size: 9px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; margin-left: 8px; color: var(--text3); vertical-align: middle; }
+  /* --- Comparison table (multi-ticker) --- */
+  .compare-card { background: var(--card-bg); border: none; border-radius: var(--radius-lg); padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.14); }
+  .compare-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
+  .compare-title { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text); }
+  .compare-sub { font-family: var(--sans); font-size: 12px; color: var(--text3); }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .compare-table th { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); padding: 0 8px 10px; text-align: center; font-weight: 400; }
+  .compare-table th.fund-col { text-align: left; padding-left: 0; min-width: 60px; }
+  .compare-table th.name-col { text-align: left; }
+  .compare-table td { padding: 9px 8px; border-top: 1px solid var(--border); text-align: center; vertical-align: middle; }
+  .compare-table td.fund-col { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text); text-align: left; padding-left: 0; }
+  .compare-table td.name-col { font-family: var(--sans); font-size: 12px; color: var(--text2); text-align: left; max-width: 180px; line-height: 1.3; }
+  .compare-table tr:hover td { background: var(--bg2); cursor: pointer; }
+  .c-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .c-dot-yes { background: var(--red); }
+  .c-dot-no { background: var(--bg3); }
+  .c-ai { font-family: var(--mono); font-size: 8px; color: var(--text3); background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
+  .c-verdict { font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; }
+  .details-toggle { font-family: var(--mono); font-size: 11px; color: var(--text3); cursor: pointer; border: none; background: none; padding: 10px 0 2px; display: block; letter-spacing: 0.05em; text-align: left; }
+  .details-toggle:hover { color: var(--text); }
+  .details-section { display: none; }
+  .details-section.open { display: block; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Is your retirement fund<br>financing immigration enforcement?</h1>
+  <p class="deck">Six publicly traded companies hold active contracts with ICE for detention, surveillance, and deportation. Most investors hold at least one without knowing it. Enter any mutual fund or ETF ticker to find out.</p>
+  <div class="rule"></div>
+
+  <div class="section-head">The companies</div>
+  <div class="co-grid" id="co-grid"></div>
+  <div class="rule"></div>
+
+  <div class="section-head">Check your fund</div>
+  <div class="two-col">
+    <div class="main-col">
+      <div class="search-wrap">
+        <div class="search-row">
+          <input type="text" id="ticker-input" placeholder="VOO, IWM, FSKAX…" maxlength="80" autocomplete="off" spellcheck="false" />
+          <button onclick="runCheck()">Look up →</button>
+        </div>
+        <div id="suggestions"></div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="result-wrap" id="result-area"></div>
+    </div>
+    <div class="side-col">
+      <div class="rank-card">
+        <div class="rank-head">▲ Top 10 most exposed</div>
+        <div id="rank-most"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="disclaimer">Holdings based on known index composition as of early 2025. Palantir (PLTR) joined the S&P 500 on September 23, 2024 and the Nasdaq-100 on December 23, 2024. GEO and CoreCivic remain Russell 2000 / S&P 600 small-cap components. Thomson Reuters is Canadian-domiciled; RELX is UK-domiciled — both appear primarily in international and global funds. GlobalX (JET) trades on the NEO Exchange (Canada) and is not held in US index funds. Weight percentages are approximate and based on publicly available index data. Holdings change quarterly. For informational and journalistic purposes only — not investment advice.</p>
+  <p class="disclaimer" style="margin-top:16px;"><strong style="color:rgba(255,255,255,0.7);">How the rankings are calculated.</strong> Each fund in the database is assigned an exposure score based on which of the six companies it holds and how dependent each company is on ICE revenue. The score for each holding is calculated by multiplying the company's approximate weight in the fund by a revenue-intensity factor: GEO Group and GlobalX score 5 (ICE contracts represent the majority of their business); CoreCivic scores 4 (~30% ICE revenue); Palantir scores 2 (ICE is a significant and fast-growing contract but a minority of total revenue); Thomson Reuters and RELX score 1 (ICE contracts are a small fraction of large, diversified businesses). A fund's total score is the sum of all its holding scores. This means a small-cap value fund holding GEO and CoreCivic at elevated index weights can rank above a total market fund holding all three US companies at lower weights — which is the correct editorial result: concentration in the most ICE-dependent businesses matters more than breadth. Funds scoring zero hold none of the six companies; these are predominantly ESG-screened funds, bond funds, and funds tracking non-US markets.</p>
+  <p style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:12px;font-family:'Libre Franklin',sans-serif;">Tool designed by Jon Nealon</p>
+</div>
+
+<script>
+const COMPANIES = [
+  { ticker:"GEO",  name:"GEO Group",           cat:"detention",    catLabel:"Detention",          icePct:"~50% of revenue", note:"Largest private detention operator. 42% of all ICE beds. Runs electronic monitoring (BI Inc) and skip tracing. $800M+ ICE revenue in 2025." },
+  { ticker:"CXW",  name:"CoreCivic",            cat:"detention",    catLabel:"Detention",          icePct:"~30% of revenue", note:"Second-largest private detention operator. ICE awards up 45% since Jan 2025 to ~$269M annually. Revenue up 18% YoY." },
+  { ticker:"PLTR", name:"Palantir",             cat:"surveillance", catLabel:"Surveillance AI",    icePct:"growing rapidly", note:"Built ImmigrationOS ($30M contract), ELITE raid-targeting platform, FALCON case management. $81M+ in ICE contracts since Jan 2025. In S&P 500 + Nasdaq-100." },
+  { ticker:"TRI",  name:"Thomson Reuters",      cat:"data",         catLabel:"Data Broker",        icePct:"minor / growing", note:"CLEAR database: aggregates license plates, addresses, criminal records for ICE. $22.8M active DHS contract. Data feeds into Palantir." },
+  { ticker:"RELX", name:"RELX / LexisNexis",   cat:"data",         catLabel:"Data Broker",        icePct:"minor",           note:"LexisNexis Accurint described as 'mission critical' to ICE enforcement. $172M+ in DHS contracts 2005–2024. Integrated directly with Palantir." },
+  { ticker:"JET",  name:"GlobalX Airlines",     cat:"transport",    catLabel:"Deportation Flights",icePct:"majority of revenue", note:"Dominant ICE deportation airline. Flew 80%+ of removal flights in 2024. $246M from ICE in 2025. Operated the El Salvador / CECOT flights. NEO Exchange (Canada)." }
+];
+
+const tagClass = { detention:"tag-detention", surveillance:"tag-surveillance", data:"tag-data", transport:"tag-transport" };
+
+document.getElementById('co-grid').innerHTML = COMPANIES.map(c=>`
+  <div class="co-card">
+    <div class="co-ticker">${c.ticker}</div>
+    <div class="co-name">${c.name}</div>
+    <span class="co-tag ${tagClass[c.cat]}">${c.catLabel}</span>
+    <div class="co-note">${c.icePct}</div>
+  </div>`).join('');
+
+const QUICK = ['VOO','SPY','QQQ','VTI','FXAIX','VTSAX','IWM','IJR','FSKAX','ESGV','SWPPX','VFIAX','VBR','IWN','SCHB','QQQM','VGT','VTHRX','VEA','BND'];
+document.getElementById('chips').innerHTML = QUICK.map(t=>`<span class="chip" onclick="q('${t}')">${t}</span>`).join('');
+
+const DB = {
+  "SPY":   {n:"SPDR S&P 500 ETF Trust",                mgr:"State Street",  type:"S&P 500",       aum:"~$550B", h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.35, ex:"The S&P 500 added Palantir on September 23, 2024 — the same day Palantir's ImmigrationOS contract was publicly known. GEO and CoreCivic are small-cap stocks not eligible for S&P 500 inclusion. Every dollar in SPY now includes a fractional stake in the AI system used to target deportees."},
+  "VOO":   {n:"Vanguard S&P 500 ETF",                  mgr:"Vanguard",      type:"S&P 500",       aum:"~$560B", h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.37, ex:"Vanguard's flagship S&P 500 fund has held Palantir since September 2024. One of the most widely held funds in American retirement accounts."},
+  "IVV":   {n:"iShares Core S&P 500 ETF",              mgr:"BlackRock",     type:"S&P 500",       aum:"~$500B", h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.36, ex:"BlackRock is CoreCivic's largest institutional shareholder (17% of all shares) through its broader fund family — but this specific S&P 500 fund holds only Palantir, which joined the index in September 2024."},
+  "FXAIX": {n:"Fidelity 500 Index Fund",               mgr:"Fidelity",      type:"S&P 500",       aum:"~$450B", h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.35, ex:"One of the most common 401(k) fund options in America. Has held Palantir since September 2024."},
+  "SWPPX": {n:"Schwab S&P 500 Index Fund",             mgr:"Schwab",        type:"S&P 500",       aum:"~$100B", h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.35, ex:"Schwab's S&P 500 mutual fund. Holds Palantir as of September 2024."},
+  "VFIAX": {n:"Vanguard 500 Index Fund Admiral",       mgr:"Vanguard",      type:"S&P 500",       aum:"~$400B", h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.37, ex:"Mutual fund version of VOO. S&P 500 index composition, including Palantir since September 2024."},
+  "VINIX": {n:"Vanguard Institutional Index Fund",     mgr:"Vanguard",      type:"S&P 500 (inst.)",aum:"~$300B",h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.37, ex:"Institutional S&P 500 fund widely used in large employer 401(k) plans. Holds Palantir."},
+  "FNILX": {n:"Fidelity ZERO Large Cap Index",         mgr:"Fidelity",      type:"Large-Cap",     aum:"~$15B",  h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.30, ex:"Zero-fee large-cap index fund. Palantir qualifies as a large-cap stock and is included."},
+  "QQQ":   {n:"Invesco QQQ Trust (Nasdaq-100)",        mgr:"Invesco",       type:"Nasdaq-100",    aum:"~$280B", h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.82, ex:"Palantir joined the Nasdaq-100 on December 23, 2024. It's now one of the 100 largest non-financial Nasdaq companies — and one of QQQ's more significant holdings. Every QQQ holder owns a stake in the ImmigrationOS platform."},
+  "QQQM":  {n:"Invesco Nasdaq 100 ETF",               mgr:"Invesco",       type:"Nasdaq-100",    aum:"~$35B",  h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.82, ex:"Same index as QQQ, smaller share price. Palantir is a component since December 2024."},
+  "VTI":   {n:"Vanguard Total Stock Market ETF",       mgr:"Vanguard",      type:"Total Market",  aum:"~$430B", h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.37, ex:"Total market funds hold every US-listed stock. Vanguard is confirmed as CoreCivic's second-largest shareholder at 11% of all outstanding shares. This fund holds GEO, CoreCivic, and Palantir simultaneously."},
+  "VTSAX": {n:"Vanguard Total Stock Market Index Admiral",mgr:"Vanguard",   type:"Total Market",  aum:"~$350B", h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.37, ex:"Mutual fund equivalent of VTI. Specifically cited in CoreCivic's investor filings as a direct holder. One of the most common retirement fund options in America — it holds all three US IIC companies."},
+  "VTSMX": {n:"Vanguard Total Stock Market Investor",  mgr:"Vanguard",      type:"Total Market",  aum:"~$20B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.37, ex:"Investor-class version of VTSAX. Specifically named in CoreCivic institutional ownership records."},
+  "FSKAX": {n:"Fidelity Total Market Index Fund",      mgr:"Fidelity",      type:"Total Market",  aum:"~$80B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.35, ex:"Fidelity's total market fund. Tracks the Dow Jones US Total Stock Market Index — includes GEO, CoreCivic, and Palantir."},
+  "FZROX": {n:"Fidelity ZERO Total Market Index",      mgr:"Fidelity",      type:"Total Market",  aum:"~$25B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.35, ex:"Zero-fee version of FSKAX. Same broad market exposure including all three US-listed IIC companies."},
+  "ITOT":  {n:"iShares Core S&P Total US Stock Market",mgr:"BlackRock",     type:"Total Market",  aum:"~$65B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.36, ex:"BlackRock's total market ETF. Despite BlackRock being CoreCivic's largest overall shareholder at 17%, they hold these positions across all their index fund products — including this one."},
+  "SCHB":  {n:"Schwab US Broad Market ETF",            mgr:"Schwab",        type:"Total Market",  aum:"~$30B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.35, ex:"Covers approximately the 2,500 largest US stocks. GEO, CoreCivic, and Palantir are all included."},
+  "SWTSX": {n:"Schwab Total Stock Market Index Fund",  mgr:"Schwab",        type:"Total Market",  aum:"~$20B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.35, ex:"Mutual fund equivalent of SCHB. Holds GEO, CoreCivic, and Palantir."},
+  "VITSX": {n:"Vanguard Total Stock Market Institutional",mgr:"Vanguard",   type:"Total Market",  aum:"~$150B", h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.37, ex:"Institutional share class of Vanguard's total market fund — common in large 401(k) plans."},
+  "IWM":   {n:"iShares Russell 2000 ETF",              mgr:"BlackRock",     type:"Russell 2000",  aum:"~$65B",  h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.19,cxwW:0.11, ex:"Tracks the 2,000 smallest US stocks. GEO and CoreCivic are Russell 2000 components. Palantir graduated out of the small-cap indices when it joined the S&P 500 in September 2024."},
+  "VTWO":  {n:"Vanguard Russell 2000 ETF",             mgr:"Vanguard",      type:"Russell 2000",  aum:"~$7B",   h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.18,cxwW:0.10, ex:"Vanguard's Russell 2000 tracker. Holds GEO and CoreCivic."},
+  "IJR":   {n:"iShares Core S&P Small-Cap ETF",        mgr:"BlackRock",     type:"S&P 600",       aum:"~$80B",  h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.22,cxwW:0.13, ex:"Specifically listed in CoreCivic's institutional ownership disclosures as a top ETF holder. S&P 600 small-cap index, which includes both detention companies."},
+  "IJS":   {n:"iShares S&P Small-Cap 600 Value ETF",   mgr:"BlackRock",     type:"S&P 600 Value", aum:"~$7B",   h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.28,cxwW:0.17, ex:"Value-screened S&P 600. Both detention companies are classified as value stocks — they carry higher index weights here than in the broad index."},
+  "VIOV":  {n:"Vanguard S&P Small-Cap 600 Value ETF",  mgr:"Vanguard",      type:"S&P 600 Value", aum:"~$3B",   h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.27,cxwW:0.16, ex:"Vanguard's small-cap value tracker. GEO and CoreCivic both qualify as value stocks."},
+  "VBR":   {n:"Vanguard Small-Cap Value ETF",          mgr:"Vanguard",      type:"SC Value",      aum:"~$28B",  h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.22,cxwW:0.14, ex:"CRSP small-cap value index. Both detention companies qualify as value."},
+  "IWN":   {n:"iShares Russell 2000 Value ETF",        mgr:"BlackRock",     type:"R2000 Value",   aum:"~$15B",  h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.25,cxwW:0.15, ex:"Value-filtered Russell 2000. Higher concentration in GEO and CoreCivic than the broad index."},
+  "VB":    {n:"Vanguard Small-Cap ETF",                mgr:"Vanguard",      type:"SC Blend",      aum:"~$55B",  h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.10,cxwW:0.07, ex:"Broad CRSP small-cap blend. Both detention companies are components."},
+  "SCHA":  {n:"Schwab US Small-Cap ETF",               mgr:"Schwab",        type:"SC Blend",      aum:"~$16B",  h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.10,cxwW:0.07, ex:"Covers roughly the 750th–2500th largest US stocks. Both detention companies fall in this range."},
+  "VSMAX": {n:"Vanguard Small-Cap Index Admiral",      mgr:"Vanguard",      type:"SC Mutual Fund", aum:"~$100B",h:{GEO:1,CXW:1,PLTR:0,TRI:0,RELX:0,JET:0}, geoW:0.10,cxwW:0.07, ex:"Mutual fund version of VB. One of the largest small-cap index funds in the US."},
+  "VTHRX": {n:"Vanguard Target Retirement 2030",       mgr:"Vanguard",      type:"Target Date",   aum:"~$40B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.15, ex:"Target-date funds hold underlying index funds including total stock market exposure. Via its VTI component, this fund indirectly holds GEO, CoreCivic, and Palantir."},
+  "VFORX": {n:"Vanguard Target Retirement 2040",       mgr:"Vanguard",      type:"Target Date",   aum:"~$35B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.17, ex:"Higher equity allocation than 2030 fund. Holds all three US-listed IIC companies through its underlying index funds."},
+  "VFFVX": {n:"Vanguard Target Retirement 2055",       mgr:"Vanguard",      type:"Target Date",   aum:"~$25B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.20, ex:"Equity-heavy target-date fund. Holds total market exposure including GEO, CoreCivic, and Palantir."},
+  "FDEWX": {n:"Fidelity Freedom 2030 Fund",            mgr:"Fidelity",      type:"Target Date",   aum:"~$20B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.14, ex:"Holds underlying Fidelity index funds with total market exposure."},
+  "FFFDX": {n:"Fidelity Freedom 2040 Fund",            mgr:"Fidelity",      type:"Target Date",   aum:"~$15B",  h:{GEO:1,CXW:1,PLTR:1,TRI:0,RELX:0,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.16, ex:"Holds total market index funds including all three US IIC companies."},
+  "ESGV":  {n:"Vanguard ESG US Stock ETF",             mgr:"Vanguard",      type:"ESG US Equity", aum:"~$12B",  h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"Vanguard's ESG screener explicitly excludes private prison and detention operators. GEO and CoreCivic are excluded. As of early 2025, Palantir has not been formally excluded despite growing shareholder pressure over its ICE contracts."},
+  "ESGU":  {n:"iShares MSCI USA ESG Optimized ETF",    mgr:"BlackRock",     type:"ESG",           aum:"~$25B",  h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"MSCI ESG ratings exclude private prison operators. GEO and CoreCivic are not held. Palantir has faced ESG scrutiny but currently remains in the portfolio."},
+  "SUSA":  {n:"iShares MSCI USA ESG Select ETF",       mgr:"BlackRock",     type:"ESG Select",    aum:"~$3B",   h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"ESG-screened US equity fund. Private detention companies are excluded from MSCI ESG portfolios."},
+  "AGG":   {n:"iShares Core US Aggregate Bond ETF",    mgr:"BlackRock",     type:"Bond Index",    aum:"~$110B", h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"Bond fund. Holds investment-grade US debt securities, not equities."},
+  "BND":   {n:"Vanguard Total Bond Market ETF",        mgr:"Vanguard",      type:"Bond Index",    aum:"~$120B", h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"Fixed income only. No equity holdings of any kind."},
+  "VEA":   {n:"Vanguard FTSE Developed Markets ETF",   mgr:"Vanguard",      type:"Int'l Developed",aum:"~$120B",h:{GEO:0,CXW:0,PLTR:0,TRI:1,RELX:1,JET:0}, ex:"Covers developed international equity markets. Thomson Reuters (Canadian) and RELX (UK) are both included as large-cap international holdings. US-listed GEO, CoreCivic, and Palantir are not held."},
+  "VXUS":  {n:"Vanguard Total International Stock ETF",mgr:"Vanguard",      type:"Int'l Total",   aum:"~$80B",  h:{GEO:0,CXW:0,PLTR:0,TRI:1,RELX:1,JET:0}, ex:"All international markets. Thomson Reuters and RELX are both included as developed-market large-caps."},
+  "EFA":   {n:"iShares MSCI EAFE ETF",                 mgr:"BlackRock",     type:"Int'l Dev.",    aum:"~$55B",  h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:1,JET:0}, ex:"Europe, Australasia, Far East. RELX (UK-domiciled) is an EAFE component. Thomson Reuters is Canadian and not in EAFE."},
+  "VWO":   {n:"Vanguard FTSE Emerging Markets ETF",    mgr:"Vanguard",      type:"Emerging",      aum:"~$80B",  h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"Emerging market equities only. No US or developed-market IIC companies."},
+  "VGT":   {n:"Vanguard Information Technology ETF",   mgr:"Vanguard",      type:"Tech Sector",   aum:"~$70B",  h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.60, ex:"Technology sector fund. Palantir qualifies as a technology company and is included as a significant holding."},
+  "XLK":   {n:"Technology Select Sector SPDR Fund",    mgr:"State Street",  type:"Tech Sector",   aum:"~$70B",  h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.50, ex:"S&P 500 technology sector fund. Palantir is included following its S&P 500 addition."},
+  "GLD":   {n:"SPDR Gold Shares",                      mgr:"State Street",  type:"Commodity",     aum:"~$70B",  h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"Holds physical gold only. No equity exposure of any kind."},
+};
+
+let cache = {};
+let bal = 10000;
+let last = null;
+const wk = t => t.toLowerCase()+'W';
+
+const inp = document.getElementById('ticker-input');
+const suggEl = document.getElementById('suggestions');
+const ra = document.getElementById('result-area');
+
+inp.addEventListener('input', ()=>{
+  const v=inp.value.toUpperCase().trim();
+  // Only show suggestions for single-ticker input
+  if(v.length<1||v.includes(',')||v.includes(' ')){suggEl.innerHTML='';return;}
+  const m=Object.entries(DB).filter(([t,f])=>t.startsWith(v)||f.n.toUpperCase().includes(v)).slice(0,6);
+  if(!m.length){suggEl.innerHTML='';return;}
+  suggEl.innerHTML=`<div class="sugg-list">${m.map(([t,f])=>`<div class="sugg-item" onclick="q('${t}')"><span class="sugg-t">${t}</span><span class="sugg-n">${f.n}</span></div>`).join('')}</div>`;
+});
+inp.addEventListener('keydown',e=>{if(e.key==='Enter')runCheck();});
+
+function q(t){inp.value=t;suggEl.innerHTML='';runCheck();}
+
+// Shared fund lookup — returns fund object from DB, cache, or API
+async function fetchFund(t) {
+  if(DB[t]) return DB[t];
+  if(cache[t]) return cache[t];
+  try {
+    const resp=await fetch("https://stock-tool-three.vercel.app/api/anthropic",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,system:`Analyze investment funds for holdings in 6 IIC companies: GEO (NYSE, Russell 2000 small-cap, private detention), CXW (NYSE, Russell 2000 small-cap, private detention), PLTR (Nasdaq, S&P 500 + Nasdaq-100 since late 2024, immigration AI), TRI (NYSE/TSX, Canadian company, large-cap data broker, in international/global funds), RELX (NYSE/LSE, UK company, large-cap data broker, in international/global funds), JET (NEO Exchange Canada, micro-cap deportation airline, NOT in US index funds). Rules: S&P 500 funds hold PLTR not GEO/CXW. Russell 2000/small-cap funds hold GEO/CXW not PLTR. Total US market funds hold GEO CXW PLTR. Nasdaq-100 holds PLTR. ESG funds exclude GEO/CXW. International/global funds may hold TRI/RELX. Bond/commodity/sector funds hold none unless tech sector (holds PLTR). Respond ONLY with JSON: {"holdsGEO":bool,"holdsCXW":bool,"holdsPLTR":bool,"holdsTRI":bool,"holdsRELX":bool,"holdsJET":bool,"n":"full fund name","mgr":"manager","type":"fund category","ex":"1-2 sentence explanation","aum":"estimated AUM"}`,messages:[{role:"user",content:`Fund: ${t}`}]})});
+    const data=await resp.json();
+    const tb=data.content.find(b=>b.type==='text');
+    if(!tb) return null;
+    const p=JSON.parse(tb.text.replace(/```json|```/g,'').trim());
+    const f={n:p.n||t,mgr:p.mgr||'',type:p.type||'',aum:p.aum||'',h:{GEO:p.holdsGEO?1:0,CXW:p.holdsCXW?1:0,PLTR:p.holdsPLTR?1:0,TRI:p.holdsTRI?1:0,RELX:p.holdsRELX?1:0,JET:p.holdsJET?1:0},ex:p.ex,ai:true};
+    cache[t]=f;
+    return f;
+  } catch(e){ return null; }
+}
+
+async function runCheck(){
+  const raw=inp.value.toUpperCase().trim();
+  if(!raw)return;
+  suggEl.innerHTML='';
+
+  // Parse comma or space separated tickers
+  const tickers=[...new Set(raw.split(/[\s,;]+/).filter(t=>t.length>0))];
+
+  if(tickers.length===1){
+    const t=tickers[0];
+    if(DB[t]){render(t,DB[t]);return;}
+    if(cache[t]){render(t,cache[t]);return;}
+    ra.innerHTML=`<div class="loading"><div class="spin"></div>Analyzing ${t}…</div>`;
+    const f=await fetchFund(t);
+    if(f){render(t,f);}
+    else{ra.innerHTML=`<div class="compare-card"><p style="font-size:13px;color:#888">Could not analyze <strong>${t}</strong>. Check the ticker and try again.</p></div>`;}
+  } else {
+    ra.innerHTML=`<div class="loading"><div class="spin"></div>Looking up ${tickers.length} funds…</div>`;
+    const results=await Promise.all(tickers.map(async t=>({t,f:await fetchFund(t)})));
+    renderMulti(results);
+  }
+}
+
+function renderMulti(results){
+  const cos=COMPANIES.map(c=>c.ticker);
+  const header=`<tr>
+    <th class="fund-col">Fund</th>
+    <th class="name-col">Name</th>
+    ${cos.map(c=>`<th>${c}</th>`).join('')}
+    <th></th>
+  </tr>`;
+
+  const rows=results.map(({t,f})=>{
+    if(!f) return `<tr><td class="fund-col">${t}</td><td class="name-col" colspan="${cos.length+1}" style="color:var(--text3);font-style:italic">Not found</td></tr>`;
+    const exposed=Object.values(f.h).some(Boolean);
+    const count=Object.values(f.h).filter(Boolean).length;
+    const vc=!exposed?'v-clear':count>=2?'v-high':'v-partial';
+    const vt=!exposed?'None':count===1?'1 co.':`${count} cos.`;
+    const dots=cos.map(c=>`<td><span class="c-dot ${f.h[c]?'c-dot-yes':'c-dot-no'}"></span></td>`).join('');
+    const aiTag=f.ai?`<span class="c-ai">AI</span>`:'';
+    return `<tr onclick="render('${t}',cache['${t}']||DB['${t}']||{})">
+      <td class="fund-col">${t}${aiTag}</td>
+      <td class="name-col">${f.n}</td>
+      ${dots}
+      <td><span class="c-verdict ${vc}">${vt}</span></td>
+    </tr>`;
+  }).join('');
+
+  ra.innerHTML=`<div class="compare-card">
+    <div class="compare-head">
+      <span class="compare-title">Comparing ${results.length} funds</span>
+      <span class="compare-sub">Click any row for full detail</span>
+    </div>
+    <table class="compare-table">
+      <thead>${header}</thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+function render(ticker, f){
+  last={ticker,f};
+  const exposed=Object.values(f.h).some(Boolean);
+  const count=Object.values(f.h).filter(Boolean).length;
+  const vc=!exposed?'v-clear':count>=2?'v-high':'v-partial';
+  const vt=!exposed?'No exposure found':count===1?'1 company detected':`${count} companies detected`;
+
+  // Simplified holding rows — no weights shown by default
+  const rows=COMPANIES.map(c=>{
+    const has=f.h[c.ticker];
+    return `<div class="h-row">
+      <div class="h-dot ${has?'dot-yes':'dot-no'}"></div>
+      <div class="h-t">${c.ticker}</div>
+      <div class="h-n">${c.name} <span class="h-cat">${c.catLabel}</span></div>
+    </div>`;
+  }).join('');
+
+  // Detail section — weights + calculator, hidden by default
+  const weightRows=COMPANIES.filter(c=>f.h[c.ticker]).map(c=>{
+    const w=f[wk(c.ticker)];
+    return `<div class="h-row" style="padding:6px 0;">
+      <div class="h-dot dot-yes"></div>
+      <div class="h-t">${c.ticker}</div>
+      <div class="h-n">${c.name}</div>
+      <div class="h-w yes">${w?`~${w.toFixed(2)}%`:'index-weighted'}</div>
+    </div>`;
+  }).join('');
+
+  const calcRows=COMPANIES.filter(c=>f.h[c.ticker]).map(c=>{
+    const w=f[wk(c.ticker)]||0.02;
+    return `<div class="c-line"><span class="c-t">${c.ticker} — ${c.name}</span><span class="c-a">~$${(bal*w/100).toFixed(2)}</span></div>`;
+  }).join('');
+
+  const tw=COMPANIES.filter(c=>f.h[c.ticker]).reduce((s,c)=>s+(f[wk(c.ticker)]||0.02),0);
+
+  ra.innerHTML=`<div class="r-card" style="background:${exposed?'#FDF1F1':'#EFF7EF'}">
+    <div class="r-header">
+      <div>
+        <div class="r-ticker">${ticker}${f.ai?'<span class="ai-badge">AI</span>':''}</div>
+        <div class="r-meta">${f.n}${f.mgr?' · '+f.mgr:''} ${f.type?'· '+f.type:''} ${f.aum?'· '+f.aum:''}</div>
+      </div>
+      <span class="verdict ${vc}">${vt}</span>
+    </div>
+    <div class="holdings-label">Company-by-company exposure</div>
+    ${rows}
+    ${f.ex?`<p class="explain">${f.ex}</p>`:''}
+    ${exposed?`
+    <button class="details-toggle" onclick="toggleDetails(this)">↓ Show dollar exposure</button>
+    <div class="details-section">
+      <div class="holdings-label" style="margin-top:12px;">Index weights</div>
+      ${weightRows}
+      <div class="calc-section" style="margin-top:12px;">
+        <div class="calc-label">Estimated dollar exposure — enter your fund balance</div>
+        <div class="calc-input-row"><span class="dollar-prefix">$</span><input type="number" value="${bal}" min="0" step="100" oninput="upd(this.value)" /></div>
+        <div class="calc-lines" id="cl">${calcRows}</div>
+        <div class="c-total"><span class="c-total-lbl">Total IIC exposure</span><span class="c-total-amt" id="ca">~$${(bal*tw/100).toFixed(2)}</span></div>
+      </div>
+    </div>`:''}
+  </div>`;
+}
+
+function toggleDetails(btn){
+  const section=btn.nextElementSibling;
+  const open=section.classList.toggle('open');
+  btn.textContent=open?'↑ Hide dollar exposure':'↓ Show dollar exposure';
+}
+
+function upd(v){
+  bal=parseFloat(v)||0;
+  if(!last)return;
+  const {f}=last;
+  const cl=document.getElementById('cl');
+  const ca=document.getElementById('ca');
+  if(cl) cl.innerHTML=COMPANIES.filter(c=>f.h[c.ticker]).map(c=>{const w=f[wk(c.ticker)]||0.02;return`<div class="c-line"><span class="c-t">${c.ticker} — ${c.name}</span><span class="c-a">~$${(bal*w/100).toFixed(2)}</span></div>`;}).join('');
+  if(ca){const tw=COMPANIES.filter(c=>f.h[c.ticker]).reduce((s,c)=>s+(f[wk(c.ticker)]||0.02),0);ca.textContent=`~$${(bal*tw/100).toFixed(2)}`;}
+}
+
+// Rankings — score each fund by ICE revenue intensity × weight
+const INTENSITY = {GEO:5, CXW:4, JET:5, PLTR:2, TRI:1, RELX:1};
+const DEFAULT_W = {GEO:0.05, CXW:0.04, JET:0.30, PLTR:0.20, TRI:0.05, RELX:0.05};
+
+function score(f) {
+  return COMPANIES.reduce((s,c) => {
+    if (!f.h[c.ticker]) return s;
+    const w = f[wk(c.ticker)] || DEFAULT_W[c.ticker];
+    return s + w * INTENSITY[c.ticker];
+  }, 0);
+}
+
+function shortName(n) {
+  return n.replace('Vanguard ','').replace('iShares ','').replace('Schwab ','').replace('Fidelity ','').replace('Invesco ','').replace(' ETF','').replace(' Fund','').replace('Index ','');
+}
+
+function buildRankings() {
+  const scored = Object.entries(DB).map(([t,f]) => ({t, f, s: score(f)}));
+  scored.sort((a,b) => b.s - a.s);
+  const maxS = scored[0].s;
+
+  const most = scored.slice(0, 10);
+
+  document.getElementById('rank-most').innerHTML = most.map((x,i) => `
+    <div class="rank-row" onclick="q('${x.t}')">
+      <span class="rank-n">${i+1}</span>
+      <span class="rank-t">${x.t}</span>
+      <span class="rank-label">${shortName(x.f.n)}</span>
+      <div class="rank-bar-wrap">
+        <div class="rank-bar-track"><div class="rank-bar-fill bar-exposed" style="width:${Math.round(x.s/maxS*100)}%"></div></div>
+      </div>
+    </div>`).join('');
+}
+
+buildRankings();
+</script>
+</body>
+</html>
