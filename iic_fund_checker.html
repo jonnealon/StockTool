@@ -391,7 +391,6 @@ function q(t){inp.value=t;suggEl.innerHTML='';runCheck();}
 // Shared fund lookup — returns fund object from DB, cache, or API
 function fetchFund(t) {
   if(DB[t]) return DB[t];
-  if(cache[t]) return cache[t];
   return null;
 }
 
