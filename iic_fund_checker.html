@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deportation, Inc. — Fund Checker</title>
+<title>Are You Invested in Immigration Enforcement?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -183,7 +183,7 @@
 <body>
 <div class="page">
   <h1>Is your retirement fund<br>financing immigration enforcement?</h1>
-  <p class="deck">Six publicly traded companies hold active contracts with ICE for detention, surveillance, and deportation. Most investors hold at least one without knowing it. Enter any mutual fund or ETF ticker to find out.</p>
+  <p class="deck">Seven publicly traded companies hold active contracts with ICE for detention, surveillance, and deportation. Most investors hold at least one without knowing it. Enter any mutual fund or ETF ticker to find out.</p>
   <div class="rule"></div>
 
   <div class="section-head">The companies</div>
@@ -211,9 +211,9 @@
     </div>
   </div>
 
+  <p style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:28px;font-family:'Libre Franklin',sans-serif;"><span style="color:#C13030;">&lt;</span>verify<span style="color:#C13030;">&gt;</span> &nbsp;·&nbsp; Tool designed by Jon Nealon &nbsp;·&nbsp; V1.7</p>
   <p class="disclaimer">Holdings based on known index composition as of July 2026. GEO and CoreCivic index membership confirmed following the June 27, 2026 Russell US Indexes reconstitution. Palantir (PLTR) joined the S&P 500 on September 23, 2024 and the Nasdaq-100 on December 23, 2024. GEO and CoreCivic remain Russell 2000 / S&P 600 small-cap components. Thomson Reuters is Canadian-domiciled; RELX is UK-domiciled — both appear primarily in international and global funds. GlobalX (JET) trades on the NEO Exchange (Canada) and is not held in US index funds. Weight percentages are approximate and based on publicly available index data. Holdings change quarterly. For informational and journalistic purposes only — not investment advice.</p>
-  <p class="disclaimer" style="margin-top:16px;"><strong style="color:rgba(255,255,255,0.7);">How the rankings are calculated.</strong> Each fund in the database is assigned an exposure score based on which of the six companies it holds and how dependent each company is on ICE revenue. The score for each holding is calculated by multiplying the company's approximate weight in the fund by a revenue-intensity factor: GEO Group and GlobalX score 5 (ICE contracts represent the majority of their business); CoreCivic scores 4 (~30% ICE revenue); Palantir scores 2 (ICE is a significant and fast-growing contract but a minority of total revenue); Thomson Reuters and RELX score 1 (ICE contracts are a small fraction of large, diversified businesses). A fund's total score is the sum of all its holding scores. This means a small-cap value fund holding GEO and CoreCivic at elevated index weights can rank above a total market fund holding all three US companies at lower weights — which is the correct editorial result: concentration in the most ICE-dependent businesses matters more than breadth. Funds scoring zero hold none of the six companies; these are predominantly ESG-screened funds, bond funds, and funds tracking non-US markets.</p>
-  <p style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:12px;font-family:'Libre Franklin',sans-serif;">&lt;verify&gt; &nbsp;·&nbsp; Tool designed by Jon Nealon &nbsp;·&nbsp; V1.6</p>
+  <p class="disclaimer" style="margin-top:16px;"><strong style="color:rgba(255,255,255,0.7);">How the rankings are calculated.</strong> Each fund in the database is assigned an exposure score based on which of the seven companies it holds and how dependent each company is on ICE revenue. The score for each holding is calculated by multiplying the company's approximate weight in the fund by a revenue-intensity factor: GEO Group and GlobalX score 5 (ICE contracts represent the majority of their business); CoreCivic scores 4 (~30% ICE revenue); Palantir scores 2 (ICE is a significant and fast-growing contract but a minority of total revenue); Thomson Reuters and RELX score 1 (ICE contracts are a small fraction of large, diversified businesses). A fund's total score is the sum of all its holding scores. This means a small-cap value fund holding GEO and CoreCivic at elevated index weights can rank above a total market fund holding all three US companies at lower weights — which is the correct editorial result: concentration in the most ICE-dependent businesses matters more than breadth. Funds scoring zero hold none of the seven companies; these are predominantly ESG-screened funds, bond funds, and funds tracking non-US markets.</p>
 </div>
 
 <script>
@@ -259,7 +259,7 @@ document.getElementById('co-grid').innerHTML = COMPANIES.map(c=>`
     </div>
   </div>`).join('');
 
-const QUICK = ['VOO','SPY','QQQ','VTI','FXAIX','VTSAX','IWM','IJR','FSKAX','ESGV','SWPPX','VFIAX','VBR','IWN','SCHB','QQQM','VGT','VTHRX','VEA','BND'];
+const QUICK = ['VOO','SPY','QQQ','VTI','FXAIX','VTSAX','IWM','IJR','FSKAX','ESGV','SCHD','VUG','VT','FCNTX','SPTM','AVUV','ARKK','VBIAX','VTXVX','VTTSX'];
 document.getElementById('chips').innerHTML = QUICK.map(t=>`<span class="chip" onclick="q('${t}')">${t}</span>`).join('');
 
 const DB = {
@@ -308,10 +308,66 @@ const DB = {
   "VWO":   {n:"Vanguard FTSE Emerging Markets ETF",    mgr:"Vanguard",      type:"Emerging",      aum:"~$80B",  h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"Emerging market equities only. No US or developed-market IIC companies."},
   "VGT":   {n:"Vanguard Information Technology ETF",   mgr:"Vanguard",      type:"Tech Sector",   aum:"~$70B",  h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.60, ex:"Technology sector fund. Palantir qualifies as a technology company and is included as a significant holding."},
   "XLK":   {n:"Technology Select Sector SPDR Fund",    mgr:"State Street",  type:"Tech Sector",   aum:"~$70B",  h:{GEO:0,CXW:0,PLTR:1,TRI:0,RELX:0,JET:0}, pltrW:0.50, ex:"S&P 500 technology sector fund. Palantir is included following its S&P 500 addition."},
+
+  "SPLG":  {n:"SPDR Portfolio S&P 500 ETF",                  mgr:"State Street",      type:"S&P 500",              aum:"~$105B", h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.35,axonW:0.10, ex:"Low-cost alternative to SPY tracking the same S&P 500 index. Palantir and Axon are S&P 500 components. One of the fastest-growing ETFs in America."},
+  "VUG":   {n:"Vanguard Growth ETF",                          mgr:"Vanguard",          type:"Large-Cap Growth",     aum:"~$130B", h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.45,axonW:0.18, ex:"CRSP large-cap growth index. Palantir and Axon are both classified as growth stocks and are significant holdings. GEO and CoreCivic are small-cap value stocks excluded from growth indices."},
+  "SCHG":  {n:"Schwab US Large-Cap Growth ETF",               mgr:"Schwab",            type:"Large-Cap Growth",     aum:"~$30B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.40,axonW:0.15, ex:"Schwab's large-cap growth fund tracks the Dow Jones US Large-Cap Growth Total Stock Market Index. Palantir and Axon are included; GEO and CoreCivic are small-cap value stocks and are excluded."},
+  "IWF":   {n:"iShares Russell 1000 Growth ETF",              mgr:"BlackRock",         type:"Large-Cap Growth",     aum:"~$105B", h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.40,axonW:0.15, ex:"Growth-tilted subset of the Russell 1000 (1,000 largest US stocks). Palantir and Axon are both Russell 1000 Growth components. GEO and CoreCivic are in the Russell 2000, not Russell 1000."},
+  "IWB":   {n:"iShares Russell 1000 ETF",                     mgr:"BlackRock",         type:"Large-Cap Blend",      aum:"~$35B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.37,axonW:0.10, ex:"Tracks the 1,000 largest US stocks by market cap. Palantir and Axon qualify as large-cap and are included. GEO and CoreCivic are ranked below 1,000 and remain in the Russell 2000."},
+  "MGK":   {n:"Vanguard Mega Cap Growth ETF",                 mgr:"Vanguard",          type:"Mega-Cap Growth",      aum:"~$20B",  h:{GEO:0,CXW:0,PLTR:1,AXON:0,TRI:0,RELX:0,JET:0}, pltrW:0.65, ex:"Tracks the CRSP US Mega Cap Growth Index — the very largest US growth companies. Palantir qualifies; Axon, while large-cap, sits below the mega-cap threshold. GEO and CoreCivic are small-cap."},
+  "VTV":   {n:"Vanguard Value ETF",                           mgr:"Vanguard",          type:"Large-Cap Value",      aum:"~$130B", h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the CRSP US Large Cap Value Index. Palantir and Axon are growth stocks and are excluded. GEO and CoreCivic are small-cap and also excluded. No IIC exposure."},
+  "IVE":   {n:"iShares S&P 500 Value ETF",                    mgr:"BlackRock",         type:"S&P 500 Value",        aum:"~$25B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Value-tilted subset of the S&P 500. Palantir and Axon are growth stocks not included in value screens. GEO and CoreCivic are below the S&P 500 market cap threshold. No IIC exposure."},
+  "VIG":   {n:"Vanguard Dividend Appreciation ETF",           mgr:"Vanguard",          type:"Dividend Growth",      aum:"~$85B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks companies with 10+ consecutive years of dividend growth. Palantir and Axon do not pay dividends. GEO suspended its dividend under the Biden administration and does not have a 10-year consecutive track record. No IIC exposure."},
+  "SCHD":  {n:"Schwab US Dividend Equity ETF",                mgr:"Schwab",            type:"Dividend",             aum:"~$65B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the Dow Jones US Dividend 100 Index, requiring 10 years of consecutive dividend payments and strong fundamentals. Neither Palantir nor Axon pays dividends. GEO does not meet the dividend consistency threshold. No IIC exposure."},
+  "VYM":   {n:"Vanguard High Dividend Yield ETF",             mgr:"Vanguard",          type:"High Dividend",        aum:"~$60B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the FTSE High Dividend Yield Index of US large-cap dividend payers. Palantir and Axon don't pay dividends. GEO and CoreCivic are small-cap stocks. No IIC exposure."},
+  "VWELX": {n:"Vanguard Wellington Fund",                     mgr:"Vanguard",          type:"Balanced (Active)",    aum:"~$100B", h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.22,axonW:0.08, ex:"One of the oldest and largest balanced mutual funds in America (65% stocks, 35% bonds), common in 401(k) plans. The actively managed equity portion focuses on large-cap growth — Palantir and Axon are significant holdings. GEO and CoreCivic fall below its large-cap mandate."},
+  "VBIAX": {n:"Vanguard Balanced Index Fund Admiral",         mgr:"Vanguard",          type:"60/40 Balanced",       aum:"~$50B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.22,axonW:0.06, ex:"Classic 60% US total stock market / 40% US bond index fund. The equity portion tracks the total market, holding all four US-listed IIC companies. The bond portion has no IIC exposure."},
+  "VO":    {n:"Vanguard Mid-Cap ETF",                         mgr:"Vanguard",          type:"Mid-Cap Blend",        aum:"~$70B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the CRSP US Mid Cap Index. GEO (~$3B) and CoreCivic (~$2.3B) fall below the mid-cap threshold. Palantir and Axon are large-cap stocks above it. No IIC exposure."},
+  "IJH":   {n:"iShares Core S&P Mid-Cap ETF",                 mgr:"BlackRock",         type:"Mid-Cap (S&P 400)",    aum:"~$90B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the S&P 400 Mid-Cap Index. GEO and CoreCivic fall below the mid-cap market cap threshold; Palantir and Axon exceed it as large-caps. No IIC exposure."},
+  "MDY":   {n:"SPDR S&P MidCap 400 ETF Trust",               mgr:"State Street",      type:"Mid-Cap (S&P 400)",    aum:"~$22B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the S&P MidCap 400 index. No IIC companies fall in the mid-cap range — GEO and CoreCivic are small-cap; Palantir and Axon are large-cap. No IIC exposure."},
+  "VXF":   {n:"Vanguard Extended Market ETF",                 mgr:"Vanguard",          type:"Extended Market",      aum:"~$15B",  h:{GEO:1,CXW:1,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, geoW:0.08,cxwW:0.06, ex:"Covers US stocks NOT in the S&P 500 — mid-cap and small-cap companies. Holds GEO and CoreCivic but not Palantir or Axon (which are S&P 500 large-caps). Often used alongside S&P 500 funds to complete total market exposure."},
+  "AVUV":  {n:"Avantis US Small Cap Value ETF",               mgr:"American Century",  type:"SC Value (Factor)",    aum:"~$20B",  h:{GEO:1,CXW:1,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, geoW:0.20,cxwW:0.14, ex:"Factor-based small-cap value ETF popular among systematic investors and the Bogleheads community. Both GEO Group and CoreCivic meet the small-cap and value criteria for inclusion."},
+  "SLYV":  {n:"SPDR S&P 600 Small Cap Value ETF",             mgr:"State Street",      type:"S&P 600 Value",        aum:"~$3B",   h:{GEO:1,CXW:1,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, geoW:0.27,cxwW:0.16, ex:"Tracks the S&P SmallCap 600 Value Index. Same underlying methodology as IJS — both detention companies are included at elevated weights due to their value classification."},
+  "DFSV":  {n:"Dimensional US Small Cap Value ETF",           mgr:"Dimensional",       type:"SC Value (Factor)",    aum:"~$8B",   h:{GEO:1,CXW:1,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, geoW:0.18,cxwW:0.12, ex:"Dimensional's factor-based small-cap value ETF tilted toward profitable small-cap value companies. Both GEO Group and CoreCivic qualify under the profitability and value screens."},
+  "SPTM":  {n:"SPDR Portfolio S&P 1500 ETF",                  mgr:"State Street",      type:"US Total (S&P 1500)",  aum:"~$12B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.30,axonW:0.09, ex:"Tracks the S&P Composite 1500 — S&P 500 plus S&P 400 mid-cap plus S&P 600 small-cap in a single fund. One of the broadest single-fund ways to own US equities — and holds GEO and CoreCivic (S&P 600) alongside Palantir and Axon (S&P 500)."},
+  "DFAC":  {n:"Dimensional US Core Equity 2 ETF",             mgr:"Dimensional",       type:"US Total (Factor)",    aum:"~$30B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.28,axonW:0.08, ex:"Dimensional's broad US market ETF with value and profitability tilts covering the full US equity market. Holds GEO and CoreCivic (small-cap value) alongside Palantir and Axon (large-cap). One of the largest factor ETFs in America."},
+  "VT":    {n:"Vanguard Total World Stock ETF",               mgr:"Vanguard",          type:"Total World",          aum:"~$45B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:1,RELX:1,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.15,axonW:0.04, ex:"The only fund in this database that holds all six publicly listed IIC companies simultaneously. Covers the entire global equity market — US stocks (GEO, CoreCivic, Palantir, Axon) plus international holdings including Thomson Reuters (Canada) and RELX (UK)."},
+  "ACWI":  {n:"iShares MSCI ACWI ETF",                        mgr:"BlackRock",         type:"All-World",            aum:"~$20B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:1,RELX:1,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.14,axonW:0.04, ex:"Tracks the MSCI All Country World Index covering ~85% of global equity market cap. Holds all six publicly listed IIC companies across US and international markets. A single fund exposure to the full IIC landscape."},
+  "SPDW":  {n:"SPDR Portfolio Developed World ex-US ETF",     mgr:"State Street",      type:"Int'l Developed",      aum:"~$30B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:1,RELX:1,JET:0}, ex:"Covers developed international markets excluding the US. Thomson Reuters (Canadian-listed) and RELX (UK-listed) are components. US-listed GEO, CoreCivic, Palantir, and Axon are not held."},
+  "VTXVX": {n:"Vanguard Target Retirement 2025 Fund",         mgr:"Vanguard",          type:"Target Date 2025",     aum:"~$30B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.005,cxwW:0.003,pltrW:0.10,axonW:0.03, ex:"Conservative equity allocation (~50% stocks) for those near or in retirement. Still holds all four US IIC companies through its underlying total market index fund components, but at lower weights than more aggressive funds."},
+  "VTTSX": {n:"Vanguard Target Retirement 2060 Fund",         mgr:"Vanguard",          type:"Target Date 2060",     aum:"~$15B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.22,axonW:0.07, ex:"Highest equity allocation of Vanguard's target-date series (~90% stocks). Holds all four US IIC companies through its underlying total market and international index fund components."},
+  "FCNTX": {n:"Fidelity Contrafund",                          mgr:"Fidelity",          type:"Large-Cap Growth (Active)",aum:"~$115B",h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.50,axonW:0.20, ex:"One of the largest actively managed mutual funds in America and a staple of employer 401(k) plans. Fidelity's flagship growth fund has historically concentrated in large-cap technology — Palantir and Axon are consistent holdings."},
+  "ARKK":  {n:"ARK Innovation ETF",                           mgr:"ARK Invest",        type:"Active Innovation",    aum:"~$8B",   h:{GEO:0,CXW:0,PLTR:1,AXON:0,TRI:0,RELX:0,JET:0}, pltrW:0.60, ex:"Cathie Wood's actively managed flagship ETF focused on disruptive innovation including AI and data analytics. Palantir is a significant holding consistent with ARK's AI investment thesis. GEO and CoreCivic are not technology companies."},
+  "FFFLX": {n:"Fidelity Freedom Index 2030 Fund",             mgr:"Fidelity",          type:"Target Date 2030 (Index)",aum:"~$15B",h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.14,axonW:0.04, ex:"Index-based (lower fee) version of Fidelity's Freedom 2030 fund. Holds all four US IIC companies through its underlying total market and S&P 500 index fund components."},
+  "FFIFX": {n:"Fidelity Freedom Index 2040 Fund",             mgr:"Fidelity",          type:"Target Date 2040 (Index)",aum:"~$10B",h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.16,axonW:0.05, ex:"Index-based Fidelity target-date fund for 2040 retirees. Higher equity allocation than FFFLX, holding all four US IIC companies."},
+  "FIKFX": {n:"Fidelity Freedom Index 2050 Fund",             mgr:"Fidelity",          type:"Target Date 2050 (Index)",aum:"~$8B", h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.18,axonW:0.06, ex:"Index-based Fidelity target-date fund for 2050 retirees. Heavy equity weighting (~85%) holding all four US IIC companies through underlying index funds."},
+
+  "AGTHX": {n:"American Funds Growth Fund of America A",    mgr:"Capital Group",     type:"Large-Cap Growth (Active)",aum:"~$328B", h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.40,axonW:0.15, ex:"One of the largest mutual funds in the world and a staple of employer 401(k) plans. Actively managed large-cap growth fund with 35%+ in technology — Palantir and Axon are consistent holdings consistent with its growth mandate."},
+  "RGAGX": {n:"American Funds Growth Fund of America R6",   mgr:"Capital Group",     type:"Large-Cap Growth (Active)",aum:"~$328B", h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.40,axonW:0.15, ex:"R6 share class of the Growth Fund of America — the lowest-cost version and the most common in large employer 401(k) plans. Same holdings as AGTHX: Palantir and Axon among its large-cap growth positions."},
+  "AEPGX": {n:"American Funds EuroPacific Growth Fund A",   mgr:"Capital Group",     type:"Int'l Large-Cap Growth",  aum:"~$130B", h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:1,RELX:1,JET:0}, ex:"One of the largest international equity funds in America, widely held in 401(k) plans. Invests in developed and emerging markets outside the US — Thomson Reuters (Canada) and RELX (UK) are both significant holdings."},
+  "CWGIX": {n:"American Funds Capital World Growth & Income A",mgr:"Capital Group",  type:"Global Large-Cap",        aum:"~$100B", h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:1,RELX:1,JET:0}, pltrW:0.18,axonW:0.06, ex:"Global equity fund holding both US and international large-caps. Holds Palantir and Axon as US growth positions, and Thomson Reuters and RELX as international data holdings — four IIC companies in one fund."},
+  "ANCFX": {n:"American Funds Fundamental Investors A",     mgr:"Capital Group",     type:"Large-Cap Blend (Active)",aum:"~$80B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.30,axonW:0.10, ex:"One of the oldest American Funds, widely held in 401(k) plans. Large-cap blend with growth tilt — Palantir and Axon are included in its technology and industrials allocations."},
+  "PRGFX": {n:"T. Rowe Price Growth Stock Fund",           mgr:"T. Rowe Price",     type:"Large-Cap Growth (Active)",aum:"~$70B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.45,axonW:0.18, ex:"T. Rowe Price's flagship growth fund, one of the most widely held actively managed funds in American 401(k) plans. Consistently holds major AI and technology growth companies including Palantir and Axon."},
+  "PRWCX": {n:"T. Rowe Price Capital Appreciation Fund",   mgr:"T. Rowe Price",     type:"Balanced (Active)",       aum:"~$50B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.22,axonW:0.08, ex:"Highly regarded active balanced fund (~65% equity). One of the best-performing balanced funds over the past decade. Its equity portion focuses on large-cap growth — Palantir and Axon are holdings."},
+  "TRBCX": {n:"T. Rowe Price Blue Chip Growth Fund",       mgr:"T. Rowe Price",     type:"Large-Cap Growth (Active)",aum:"~$65B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.42,axonW:0.16, ex:"T. Rowe Price's large-cap growth fund focusing on industry-leading 'blue chip' growth companies. Common in 401(k) plans. Palantir and Axon qualify under its large-cap growth mandate."},
+  "TRRHX": {n:"T. Rowe Price Retirement 2025 Fund",        mgr:"T. Rowe Price",     type:"Target Date 2025",        aum:"~$17B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.005,cxwW:0.003,pltrW:0.10,axonW:0.03, ex:"T. Rowe Price's actively managed target-date fund for 2025 retirees. Invests across underlying T. Rowe Price equity funds covering large-cap growth (PLTR, AXON) and broad market (GEO, CXW)."},
+  "TRRCX": {n:"T. Rowe Price Retirement 2030 Fund",        mgr:"T. Rowe Price",     type:"Target Date 2030",        aum:"~$20B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.01,cxwW:0.01,pltrW:0.14,axonW:0.04, ex:"T. Rowe Price's actively managed target-date fund for 2030 retirees. Higher equity allocation than 2025 — holds all four US-listed IIC companies through underlying T. Rowe Price growth and broad market funds."},
+  "DODGX": {n:"Dodge & Cox Stock Fund",                    mgr:"Dodge & Cox",       type:"Large-Cap Value (Active)", aum:"~$100B", h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"One of the most widely held actively managed value funds in America. Dodge & Cox focuses on undervalued large-cap companies — Palantir is a growth stock excluded by this discipline; GEO and CoreCivic are small-cap. No IIC exposure."},
+  "FBGRX": {n:"Fidelity Blue Chip Growth Fund",            mgr:"Fidelity",          type:"Large-Cap Growth (Active)",aum:"~$55B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.50,axonW:0.18, ex:"Fidelity's large-cap growth fund focused on well-known, established companies. A common 401(k) option. Palantir and Axon are both consistent holdings given their large-cap growth profiles."},
+  "FSPGX": {n:"Fidelity Large Cap Growth Index Fund",      mgr:"Fidelity",          type:"Large-Cap Growth (Index)", aum:"~$25B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.40,axonW:0.14, ex:"Index version of Fidelity's large-cap growth exposure, tracking the Russell 1000 Growth Index. Palantir and Axon are both Russell 1000 Growth components. Lower cost alternative to FBGRX with similar IIC exposure."},
+  "FBALX": {n:"Fidelity Balanced Fund",                   mgr:"Fidelity",          type:"Balanced (Active)",        aum:"~$25B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.18,axonW:0.07, ex:"Fidelity's actively managed balanced fund (~60% equity, 40% bonds). Common in 401(k) plans. The equity portion emphasizes large-cap growth companies — Palantir and Axon are holdings."},
+  "SCHX":  {n:"Schwab US Large-Cap ETF",                   mgr:"Schwab",            type:"Large-Cap Blend",          aum:"~$40B",  h:{GEO:0,CXW:0,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, pltrW:0.36,axonW:0.10, ex:"Tracks the Dow Jones US Large-Cap Total Stock Market Index — approximately the 750 largest US companies. Palantir and Axon both qualify as large-caps. GEO and CoreCivic fall below the threshold."},
+  "IWV":   {n:"iShares Russell 3000 ETF",                  mgr:"BlackRock",         type:"US Total Market",          aum:"~$15B",  h:{GEO:1,CXW:1,PLTR:1,AXON:1,TRI:0,RELX:0,JET:0}, geoW:0.02,cxwW:0.01,pltrW:0.36,axonW:0.10, ex:"Tracks the Russell 3000 — essentially the entire investable US equity market. Holds all four US-listed IIC companies: GEO and CoreCivic (Russell 2000 small-cap) and Palantir and Axon (Russell 1000 large-cap)."},
+  "VNQ":   {n:"Vanguard Real Estate ETF",                  mgr:"Vanguard",          type:"Real Estate (REIT)",        aum:"~$35B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the MSCI US Investable Market Real Estate 25/50 Index. GEO Group and CoreCivic both converted from REIT to C-corporation status and are no longer in real estate indices. Palantir and Axon are technology companies, not REITs. No IIC exposure."},
+  "VBTLX": {n:"Vanguard Total Bond Market Index Admiral",  mgr:"Vanguard",          type:"Bond Index",               aum:"~$130B", h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the Bloomberg US Aggregate Float Adjusted Index. Fixed income fund holding investment-grade US bonds. No equity exposure of any kind. No IIC companies."},
+  "FXNAX": {n:"Fidelity US Bond Index Fund",               mgr:"Fidelity",          type:"Bond Index",               aum:"~$65B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Tracks the Bloomberg US Aggregate Bond Index. Fixed income fund only. No IIC exposure."},
+  "IXUS":  {n:"iShares Core MSCI Total International Stock ETF",mgr:"BlackRock",   type:"Int'l Total Market",       aum:"~$40B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:1,RELX:1,JET:0}, ex:"Tracks the MSCI ACWI ex-USA Investable Market Index covering all international markets. Thomson Reuters (Canada) and RELX (UK) are both components as developed-market large-caps. US-listed GEO, CoreCivic, Palantir, and Axon are not held."},
+  "FZILX": {n:"Fidelity ZERO International Index Fund",    mgr:"Fidelity",          type:"Int'l Total Market",       aum:"~$8B",   h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:1,RELX:1,JET:0}, ex:"Fidelity's zero-fee international index fund. Covers non-US developed and emerging markets. Thomson Reuters and RELX are both held as international large-caps."},
+  "VWINX": {n:"Vanguard Wellesley Income Fund",            mgr:"Vanguard",          type:"Conservative Balanced",    aum:"~$50B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:0,RELX:0,JET:0}, ex:"Conservative allocation (~40% equity, 60% bonds) focused on income-producing large-cap dividend stocks. Palantir and Axon do not pay dividends and are excluded. GEO and CoreCivic are small-cap. No IIC exposure."},
+  "VWIGX": {n:"Vanguard International Growth Fund",        mgr:"Vanguard",          type:"Int'l Large-Cap Growth",   aum:"~$50B",  h:{GEO:0,CXW:0,PLTR:0,AXON:0,TRI:1,RELX:1,JET:0}, ex:"Actively managed international growth fund. Thomson Reuters and RELX are both large-cap holdings in developed international markets. US-listed GEO, CoreCivic, Palantir, and Axon are not held."},
   "GLD":   {n:"SPDR Gold Shares",                      mgr:"State Street",  type:"Commodity",     aum:"~$70B",  h:{GEO:0,CXW:0,PLTR:0,TRI:0,RELX:0,JET:0}, ex:"Holds physical gold only. No equity exposure of any kind."},
 };
 
-let cache = {};
 let bal = 10000;
 let last = null;
 const wk = t => t.toLowerCase()+'W';
@@ -333,40 +389,45 @@ inp.addEventListener('keydown',e=>{if(e.key==='Enter')runCheck();});
 function q(t){inp.value=t;suggEl.innerHTML='';runCheck();}
 
 // Shared fund lookup — returns fund object from DB, cache, or API
-async function fetchFund(t) {
+function fetchFund(t) {
   if(DB[t]) return DB[t];
   if(cache[t]) return cache[t];
-  try {
-    const resp=await fetch("https://stock-tool-three.vercel.app/api/anthropic",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,system:`Analyze investment funds for holdings in 6 IIC companies: GEO (NYSE, Russell 2000 small-cap, private detention), CXW (NYSE, Russell 2000 small-cap, private detention), PLTR (Nasdaq, S&P 500 + Nasdaq-100 since late 2024, immigration AI), TRI (NYSE/TSX, Canadian company, large-cap data broker, in international/global funds), RELX (NYSE/LSE, UK company, large-cap data broker, in international/global funds), JET (NEO Exchange Canada, micro-cap deportation airline, NOT in US index funds). Rules: S&P 500 funds hold PLTR not GEO/CXW. Russell 2000/small-cap funds hold GEO/CXW not PLTR. Total US market funds hold GEO CXW PLTR. Nasdaq-100 holds PLTR. ESG funds exclude GEO/CXW. International/global funds may hold TRI/RELX. Bond/commodity/sector funds hold none unless tech sector (holds PLTR). Respond ONLY with JSON: {"holdsGEO":bool,"holdsCXW":bool,"holdsPLTR":bool,"holdsTRI":bool,"holdsRELX":bool,"holdsJET":bool,"n":"full fund name","mgr":"manager","type":"fund category","ex":"1-2 sentence explanation","aum":"estimated AUM"}`,messages:[{role:"user",content:`Fund: ${t}`}]})});
-    const data=await resp.json();
-    const tb=data.content.find(b=>b.type==='text');
-    if(!tb) return null;
-    const p=JSON.parse(tb.text.replace(/```json|```/g,'').trim());
-    const f={n:p.n||t,mgr:p.mgr||'',type:p.type||'',aum:p.aum||'',h:{GEO:p.holdsGEO?1:0,CXW:p.holdsCXW?1:0,PLTR:p.holdsPLTR?1:0,TRI:p.holdsTRI?1:0,RELX:p.holdsRELX?1:0,JET:p.holdsJET?1:0},ex:p.ex,ai:true};
-    cache[t]=f;
-    return f;
-  } catch(e){ return null; }
+  return null;
 }
 
-async function runCheck(){
+function notFound(t) {
+  ra.innerHTML=`<div class="r-card" style="background:#F5F5F3;border-radius:var(--radius-lg)">
+    <div class="r-header">
+      <div>
+        <div class="r-ticker" style="color:var(--text2)">${t}</div>
+        <div class="r-meta">Not in our database of 100+ funds</div>
+      </div>
+      <span class="verdict v-partial">Unknown</span>
+    </div>
+    <p class="explain">This ticker isn't in our database. To check it manually, search for <strong>${t} holdings</strong> and look for any of the seven companies below. If you find it, <a href="mailto:jnealon@gmail.com" style="color:var(--text2)">let us know</a> and we'll add it.</p>
+    <div class="holdings-label">The seven companies to look for</div>
+    ${COMPANIES.map(c=>`<div class="h-row">
+      <div class="h-dot dot-no"></div>
+      <div class="h-t">${c.ticker}</div>
+      <div class="h-n">${c.name} <span class="h-cat">${c.catLabel}</span></div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function runCheck(){
   const raw=inp.value.toUpperCase().trim();
   if(!raw)return;
   suggEl.innerHTML='';
 
-  // Parse comma or space separated tickers
   const tickers=[...new Set(raw.split(/[\s,;]+/).filter(t=>t.length>0))];
 
   if(tickers.length===1){
     const t=tickers[0];
-    if(DB[t]){render(t,DB[t]);return;}
-    if(cache[t]){render(t,cache[t]);return;}
-    ra.innerHTML=`<div class="loading"><div class="spin"></div>Analyzing ${t}…</div>`;
-    const f=await fetchFund(t);
+    const f=fetchFund(t);
     if(f){render(t,f);}
-    else{ra.innerHTML=`<div class="compare-card"><p style="font-size:13px;color:#888">Could not analyze <strong>${t}</strong>. Check the ticker and try again.</p></div>`;}
+    else{notFound(t);}
   } else {
-    ra.innerHTML=`<div class="loading"><div class="spin"></div>Looking up ${tickers.length} funds…</div>`;
-    const results=await Promise.all(tickers.map(async t=>({t,f:await fetchFund(t)})));
+    const results=tickers.map(t=>({t,f:fetchFund(t)}));
     renderMulti(results);
   }
 }
